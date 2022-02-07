@@ -1,0 +1,42 @@
+install.packages("ggplot2") #This package is useful for visualizing data
+library(ggplot2)#calling ggplot2
+frequency_visit<-c(0.6,0.3,0.4,0.4,0.2,0.6,0.3,0.4,0.9,0.2)
+frequency_visit
+BP <-c(103,87,32,42,59,109,78,205,135,176)
+BP
+First_assessment<-c(1,1,1,1,2,2,2,2,"NA" ,1)# 1 for bad and  2 for good 
+First_assessment
+Second_assessment<-c(1,1,2,2,1,1,2,2,2,2)#2 for high and 1 for low 
+Second_assessment
+final_decision<-c(1,2,1,2,1,2,1,2,2,2)# 2 for high and 1 for low 
+final_decision
+#creating a dataframe 
+patient_data<-data.frame(frequency_visit,BP,First_assessment,Second_assessment,final_decision)
+patient_data
+str(patient_data)
+#it is imporant to make sure the categorical variable used in plots are factors
+patient_data$First<-as.factor(patient_data$First_assessment)
+patient_data$Second<-as.factor(patient_data$Second_assessment)
+patient_data$final_decision<-as.factor(patient_data$final_decision)
+#labelling the categorical value to the integer 
+patient_data$First<-factor(patient_data$First_assessment,
+                         levels=c(1,2),
+                         labels=c("bad", "good"))
+patient_data$Second<-factor(patient_data$Second_assessment,
+                      levels=c(1,2),
+                      labels=c("low", "high"))
+
+patient_data$final_decision<-factor(patient_data$final_decision,
+                       levels=c(1,2),
+                       labels=c("low", "high"))
+str(patient_data)
+#making boxplot
+patientplot1 = ggplot(patient_data, aes(x = First_assessment, y = BP,fill =First,)) + geom_boxplot() 
+patientplot1
+patientplot2 = ggplot(patient_data, aes(x =Second_assessment, y = BP,fill =Second)) + geom_boxplot() 
+patientplot2
+patientplot3 = ggplot(patient_data, aes(x = final_decision, y = BP,fill =final_decision)) + geom_boxplot()
+patientplot3
+#making histogram 
+hist(patient_data$BP,col = "yellow",border = "blue",main = "Blood pressure of patient dataset vs no of visit",xlab = "BP")
+
